@@ -1,6 +1,6 @@
 name: "Git Auto Tag"
 description: "Declarative, path-based semantic versioning for your Git repositories."
-author: "Your Name"
+author: "mkhubaib666"
 
 branding:
   icon: "git-commit"
