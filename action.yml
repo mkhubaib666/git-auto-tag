@@ -1,0 +1,40 @@
+name: "Git Auto Tag"
+description: "Declarative, path-based semantic versioning for your Git repositories."
+author: "Your Name"
+
+branding:
+  icon: "git-commit"
+  color: "blue"
+
+inputs:
+  github-token:
+    description: "Required. The GitHub token to use for creating tags."
+    required: true
+  config-path:
+    description: "Path to the configuration file."
+    required: false
+    default: ".autotag.yml"
+  default-bump:
+    description: "The default version bump if changed files don't match any rules."
+    required: false
+    default: "patch"
+  tag-prefix:
+    description: "A prefix to add to the version number when creating a tag."
+    required: false
+    default: "v"
+  create-release:
+    description: "If true, creates a GitHub Release with the new tag."
+    required: false
+    default: "false"
+
+outputs:
+  new-tag:
+    description: "The newly created tag. Empty if no tag was created."
+  old-tag:
+    description: "The previous tag that the bump was based on."
+  bump-level:
+    description: "The level of the version bump (major, minor, patch, or none)."
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
