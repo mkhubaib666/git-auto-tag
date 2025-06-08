@@ -3,6 +3,8 @@ import * as micromatch from "micromatch";
 import { Config } from "./config";
 
 type BumpLevel = "major" | "minor" | "patch" | "none";
+// Add the 'export' keyword here to make this type available to other files.
+export type ValidBumpLevel = "major" | "minor" | "patch";
 
 /**
  * Determines the bump level based on changed files and configuration.
@@ -34,7 +36,6 @@ export function determineBumpLevel(
     }
   }
 
-  // If no rules matched but there were non-ignored files, use the default
   if (level === "none") {
     const validBumps: BumpLevel[] = ["major", "minor", "patch"];
     if (validBumps.includes(defaultBump as BumpLevel)) {
@@ -50,11 +51,11 @@ export function determineBumpLevel(
  */
 export function calculateNewTag(
   latestTag: string,
-  level: BumpLevel,
+  level: ValidBumpLevel,
   prefix: string
 ): string {
   if (!latestTag) {
-    return `${prefix}1.0.0`; // Start with 1.0.0 if no tags exist
+    return `${prefix}1.0.0`;
   }
 
   const version = latestTag.replace(prefix, "");

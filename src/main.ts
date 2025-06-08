@@ -1,7 +1,11 @@
 import * as core from "@actions/core";
 import { getChangedFiles, getLatestTag, createAndPushTag } from "./git";
 import { loadConfig } from "./config";
-import { determineBumpLevel, calculateNewTag } from "./version";
+import {
+  determineBumpLevel,
+  calculateNewTag,
+  ValidBumpLevel, // This import will now succeed
+} from "./version";
 
 async function run(): Promise<void> {
   try {
@@ -10,12 +14,10 @@ async function run(): Promise<void> {
     const defaultBump = core.getInput("default-bump");
     const tagPrefix = core.getInput("tag-prefix");
 
-    // 1. Get the latest tag
     const latestTag = await getLatestTag();
     core.info(`Latest tag found: ${latestTag || "None"}`);
     core.setOutput("old-tag", latestTag);
 
-    // 2. Get changed files since the last tag
     const changedFiles = await getChangedFiles(latestTag);
     if (changedFiles.length === 0) {
       core.info("No changed files found. Exiting.");
@@ -24,7 +26,6 @@ async function run(): Promise<void> {
     }
     core.info(`Changed files: \n${changedFiles.join("\n")}`);
 
-    // 3. Load configuration and determine bump level
     const config = loadConfig(configPath);
     const bumpLevel = determineBumpLevel(changedFiles, config, defaultBump);
     core.info(`Determined version bump level: ${bumpLevel}`);
@@ -35,8 +36,11 @@ async function run(): Promise<void> {
       return;
     }
 
-    // 4. Calculate and create the new tag
-    const newTag = calculateNewTag(latestTag, bumpLevel, tagPrefix);
+    const newTag = calculateNewTag(
+      latestTag,
+      bumpLevel as ValidBumpLevel,
+      tagPrefix
+    );
     core.info(`New tag to be created: ${newTag}`);
     core.setOutput("new-tag", newTag);
 
