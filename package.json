@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/git-auto-tag.git"
+    "url": "git+https://github.com/mkhubaib666/git-auto-tag.git"
   },
   "keywords": ["github", "actions", "versioning", "semver", "tagging"],
   "author": "Your Name",
@@ -29,6 +29,7 @@
     "@types/micromatch": "^4.0.2",
     "@types/node": "^18.11.18",
     "@types/semver": "^7.3.13",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
     "@vercel/ncc": "^0.36.1",
     "eslint": "^8.32.0",
