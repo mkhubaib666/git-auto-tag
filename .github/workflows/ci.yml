@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format -- --check
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build the action
+        run: npm run build
+
+      - name: Check for uncommitted changes in dist
+        run: |
+          if ! git diff --exit-code --quiet dist/; then
+            echo "Uncommitted changes in dist/ directory. Please run 'npm run build' and commit the changes."
+            exit 1
+          fi
